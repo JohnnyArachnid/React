@@ -1,42 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, gql } from '@apollo/client';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Pagination, Container, Box, TextField, MenuItem, FormControl, Select, Typography, Button } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
+import { 
+  Paper,
+  Table, 
+  TableBody, 
+  TableCell, 
+  TableContainer, 
+  TableHead, 
+  TableRow, 
+  Pagination, 
+  Container, 
+  Box, 
+  TextField, 
+  MenuItem, 
+  FormControl, 
+  Select, 
+  Typography, 
+  Button
+} from "@mui/material";
 import './Table.css';
-
-const GET_CHARACTERS_COUNT = gql`
-  query {
-    characters {
-      info {
-        count
-      }
-    }
-  }
-`;
-
-const GET_CHARACTERS = gql`
-  query CharactersByIds($ids: [ID!]!) {
-    charactersByIds(ids: $ids) {
-      id
-      name
-      status
-      species
-      type
-      gender
-      origin {
-        name
-        dimension
-      }
-      location {
-        name
-        dimension
-      }
-      image
-      episode {
-        id
-      }
-    }
-  }
-`;
 
 const columns = [
   { id: 'id', label: 'Id', minWidth: 100 },
@@ -51,8 +33,7 @@ const columns = [
   { id: 'episodesNumber', label: 'Appearances in Episodes', minWidth: 100 }
 ];
 
-export default function FinalTable() {
-  const [characterCount, setCharacterCount] = useState(0);
+export default function FinalTable({ _, dataCharacters }) {
   const [rows, setRows] = useState([]);
   const [filteredRows, setFilteredRows] = useState([]);
   const [page, setPage] = useState(0);
@@ -60,19 +41,7 @@ export default function FinalTable() {
   const [filterName, setFilterName] = useState('');
   const [filterStatus, setFilterStatus] = useState('');
   const [filterGender, setFilterGender] = useState('');
-
-  const { loading: loadingCount, error: errorCount, data: dataCount } = useQuery(GET_CHARACTERS_COUNT);
-  
-  useEffect(() => {
-    if (dataCount) {
-      setCharacterCount(dataCount.characters.info.count);
-    }
-  }, [dataCount]);
-
-  const { loading: loadingCharacters, error: errorCharacters, data: dataCharacters } = useQuery(GET_CHARACTERS, {
-    variables: { ids: Array.from({ length: characterCount }, (_, i) => i + 1) },
-    skip: characterCount <= 0
-  });
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (dataCharacters) {
@@ -146,22 +115,39 @@ export default function FinalTable() {
     setRowsPerPage(10);
   };
 
-  if (loadingCount) return <p>Loading...</p>;
-  if (errorCount) return <p>Error fetching character count: {errorCount.message}</p>;
-  if (loadingCharacters) return <p>Loading characters...</p>;
-  if (errorCharacters) return <p>Error fetching characters: {errorCharacters.message}</p>;
+  const handleRowClick = (id) => {
+    navigate(`/character/${id}`);
+  };
 
   return (
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }} maxWidth="lg">
+    <Paper sx={{
+      minWidth: '60vw', 
+      maxWidth: '90vw', 
+      maxHeight: '90vh', 
+      minHeight: '50vh', 
+      overflow: 'auto', 
+      margin: 'auto',
+    }}>
+      <Container sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '16px',
+      }} 
+      maxWidth="lg">
         <Button variant="contained" onClick={handleReset}>Reset</Button>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }}>
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '16px', 
+        }}>
           <TextField
             label="Filter by name"
             variant="outlined"
             value={filterName}
             onChange={handleFilterNameChange}
-            sx={{marginRight: '20px'}}
+            sx={{marginRight: '20px', }}
           />
           <FormControl variant="outlined" >
             <Select
@@ -169,7 +155,7 @@ export default function FinalTable() {
               onChange={handleFilterStatusChange}
               displayEmpty
               inputProps={{ 'aria-label': 'Without label' }}
-              sx={{marginRight: '20px'}}
+              sx={{marginRight: '20px', }}
             >
               <MenuItem value="">All Statuses</MenuItem>
               <MenuItem value="Alive">Alive</MenuItem>
@@ -193,10 +179,10 @@ export default function FinalTable() {
           </FormControl>
         </Box>
         <Typography variant="h6" component="h1">
-        Count of Rows: {filteredRows.length}
+          Count of Rows: {filteredRows.length}
         </Typography>
       </Container>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 440, }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -204,7 +190,7 @@ export default function FinalTable() {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth }}
+                  sx={{ minWidth: column.minWidth, }}
                 >
                   {column.label}
                 </TableCell>
@@ -215,13 +201,20 @@ export default function FinalTable() {
             {filteredRows.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={columns.length} align="center">
-                  Brak danych
+                  No data
                 </TableCell>
               </TableRow>
             ) : (
               filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                <TableRow key={row.id}>
-                  {columns.map((column) => {
+                <TableRow 
+                  hover
+                  role="checkbox" 
+                  tabIndex={-1} 
+                  key={row.id}
+                  onClick={() => handleRowClick(row.id)}
+                  sx={{ cursor: 'pointer', }}
+                >
+                  {columns.map(column => {
                     const value = row[column.id];
                     return (
                       <TableCell key={column.id} align={column.align}>
@@ -235,7 +228,13 @@ export default function FinalTable() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }} maxWidth="md">
+      <Container sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        padding: '16px', 
+      }} 
+      maxWidth="md">
       <Pagination
           count={Math.ceil(filteredRows.length / rowsPerPage)}
           page={page + 1}
@@ -244,8 +243,13 @@ export default function FinalTable() {
           showFirstButton
           showLastButton
         />
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }}>
-          <Typography variant="body1" component="span" sx={{marginRight: '20px'}}>
+        <Box sx={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '16px', 
+        }}>
+          <Typography variant="body1" component="span" sx={{marginRight: '20px', }}>
               Rows per page:
           </Typography>
           <FormControl variant="outlined">
