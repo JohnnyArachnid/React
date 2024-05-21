@@ -16,8 +16,12 @@ import {
   FormControl, 
   Select, 
   Typography, 
-  Button
+  Button,
+  InputAdornment,
+  Avatar, 
 } from "@mui/material";
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import AccountCircle from '@mui/icons-material/AccountCircle';
 import './Table.css';
 
 const columns = [
@@ -54,7 +58,7 @@ export default function FinalTable({ _, dataCharacters }) {
         gender: character.gender,
         origin: character.origin.name,
         location: character.location.name,
-        image: <img src={character.image} alt={character.name} style={{ width: 50, height: 50 }} />,
+        image: <Avatar alt={character.name} src={character.image} sx={{margin: 'auto', width: '56px', height: '56px'}}/>,
         episodesNumber: character.episode.length,
       }));
       setRows(newRows);
@@ -127,15 +131,27 @@ export default function FinalTable({ _, dataCharacters }) {
       minHeight: '50vh', 
       overflow: 'auto', 
       margin: 'auto',
+      backgroundColor: 'white',
+      border: '5px solid black',
+      borderRadius: '10px',
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
     }}>
       <Container sx={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
         padding: '16px',
+        borderRadius: '10px',
       }} 
       maxWidth="lg">
-        <Button variant="contained" onClick={handleReset}>Reset</Button>
+        <Button variant="contained" onClick={handleReset} sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&:hover': {
+                    backgroundColor: 'rgba(0, 40, 0, 1)',
+                    color: 'white',
+                }
+            }} size='large' startIcon={<RestartAltIcon />}>Reset</Button>
         <Box sx={{ 
           display: 'flex', 
           justifyContent: 'space-between', 
@@ -144,10 +160,55 @@ export default function FinalTable({ _, dataCharacters }) {
         }}>
           <TextField
             label="Filter by name"
-            variant="outlined"
+            variant="filled"
             value={filterName}
             onChange={handleFilterNameChange}
-            sx={{marginRight: '20px', }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AccountCircle sx={{ color: 'white', mr: 1, my: 0.5 }}/>
+                </InputAdornment>
+              ),
+            }}
+            sx={{
+              marginRight: '20px',
+              borderRadius: '5px',
+              backgroundColor: 'rgba(0, 40, 0, 0.8)',
+              '& .MuiFilledInput-root': {
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 40, 0, 0.9)',
+                },
+                '&.Mui-focused': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                },
+              },
+              '& .MuiFilledInput-underline:before': {
+                borderBottomColor: 'white',
+              },
+              '& .MuiFilledInput-underline:after': {
+                borderBottomColor: 'white',
+              },
+              '&:hover .MuiFilledInput-underline:before': {
+                borderBottomColor: 'white',
+              },
+              '&.Mui-focused .MuiFilledInput-underline:after': {
+                borderBottomColor: 'white',
+              },
+              '& .MuiInputLabel-root': {
+                color: 'white',
+                '&.Mui-focused': {
+                  color: 'white',
+                },
+              },
+              '& .MuiInputBase-input': {
+                color: 'white',
+              },
+              '& .MuiInputBase-input::placeholder': {
+                color: 'white',
+                opacity: 1,
+              },
+            }}
           />
           <FormControl variant="outlined" >
             <Select
@@ -155,12 +216,66 @@ export default function FinalTable({ _, dataCharacters }) {
               onChange={handleFilterStatusChange}
               displayEmpty
               inputProps={{ 'aria-label': 'Without label' }}
-              sx={{marginRight: '20px', }}
+              sx={{
+                marginRight: '20px',
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '& .MuiSelect-icon': {
+                  color: 'white',
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 0.8)',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 1)',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 1)',
+                },
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 40, 0, 0.9)',
+                },
+                '&.Mui-focused': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                },
+              }}
             >
-              <MenuItem value="">All Statuses</MenuItem>
-              <MenuItem value="Alive">Alive</MenuItem>
-              <MenuItem value="Dead">Dead</MenuItem>
-              <MenuItem value="unknown">Unknown</MenuItem>
+              <MenuItem value="" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}> All Statuses</MenuItem>
+              <MenuItem value="Alive" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Alive</MenuItem>
+              <MenuItem value="Dead" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Dead</MenuItem>
+              <MenuItem value="unknown" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Unknown</MenuItem>
             </Select>
           </FormControl>
           <FormControl variant="outlined">
@@ -169,16 +284,82 @@ export default function FinalTable({ _, dataCharacters }) {
               onChange={handleFilterGenderChange}
               displayEmpty
               inputProps={{ 'aria-label': 'Without label' }}
+              sx={{
+                marginRight: '20px',
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '& .MuiSelect-icon': {
+                  color: 'white',
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 0.8)',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 1)',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 1)',
+                },
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 40, 0, 0.9)',
+                },
+                '&.Mui-focused': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                },
+              }}
             >
-              <MenuItem value="">All Genders</MenuItem>
-              <MenuItem value="Male">Male</MenuItem>
-              <MenuItem value="Female">Female</MenuItem>
-              <MenuItem value="Genderless">Genderless</MenuItem>
-              <MenuItem value="unknown">Unknown</MenuItem>
+              <MenuItem value="" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>All Genders</MenuItem>
+              <MenuItem value="Male" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Male</MenuItem>
+              <MenuItem value="Female" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Female</MenuItem>
+              <MenuItem value="Genderless" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Genderless</MenuItem>
+              <MenuItem value="unknown" sx={{
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '&.Mui-selected': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                }, '&:hover': {
+                  color: 'rgba(0, 40, 0, 1)',
+                }
+              }}>Unknown</MenuItem>
             </Select>
           </FormControl>
         </Box>
-        <Typography variant="h6" component="h1">
+        <Typography variant="h4" component="h1" sx={{
+          fontFamily: 'Get Schwifty, Roboto, Arial, sans-serif',
+          color: 'rgba(0, 40, 0, 0.8)',
+        }}>
           Count of Rows: {filteredRows.length}
         </Typography>
       </Container>
@@ -190,7 +371,16 @@ export default function FinalTable({ _, dataCharacters }) {
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  sx={{ minWidth: column.minWidth, }}
+                  sx={{ minWidth: column.minWidth,
+                    backgroundColor: 'rgba(0, 40, 0, 1)',
+                    textAlign: 'center',
+                    color: 'white',
+                    fontFamily: 'Get Schwifty, Roboto, Arial, sans-serif',
+                    border: '1px solid black',
+                    borderRadius: '2px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+                    fontSize: '1.2vw',
+                   }}
                 >
                   {column.label}
                 </TableCell>
@@ -217,7 +407,9 @@ export default function FinalTable({ _, dataCharacters }) {
                   {columns.map(column => {
                     const value = row[column.id];
                     return (
-                      <TableCell key={column.id} align={column.align}>
+                      <TableCell key={column.id} align={column.align} sx={{ textAlign:'center',
+                        color: 'rgba(0, 40, 0, 0.8)',
+                      }}>
                         {value}
                       </TableCell>
                     );
@@ -234,14 +426,38 @@ export default function FinalTable({ _, dataCharacters }) {
         alignItems: 'center', 
         padding: '16px', 
       }} 
-      maxWidth="md">
+      maxWidth="lg">
       <Pagination
           count={Math.ceil(filteredRows.length / rowsPerPage)}
           page={page + 1}
           onChange={handleChangePage}
-          color="primary"
           showFirstButton
           showLastButton
+          size="large"
+          variant="outlined"
+          shape="rounded"
+          sx={{
+            marginRight: '20px',
+            '& .MuiPaginationItem-root': {
+              color: 'rgba(0, 40, 0, 0.8)',
+              fontWeight: 'bold',
+            },
+            '& .Mui-selected': {
+              color: 'rgba(0, 40, 0, 1)',
+            },
+            '& .MuiPaginationItem-ellipsis': {
+              color: 'rgba(0, 40, 0, 1)',
+            },
+            '& .MuiPaginationItem-page:hover': {
+              color: 'rgba(0, 40, 0, 0.9)',
+            },
+            '& .MuiPaginationItem-previousNext, & .MuiPaginationItem-firstLast': {
+              color: 'rgba(0, 40, 0, 0.8)',
+            },
+            '& .MuiPaginationItem-previousNext:hover, & .MuiPaginationItem-firstLast:hover': {
+              color: 'rgba(0, 40, 0, 0.9)',
+            },
+          }}
         />
         <Box sx={{ 
           display: 'flex', 
@@ -249,7 +465,11 @@ export default function FinalTable({ _, dataCharacters }) {
           alignItems: 'center', 
           padding: '16px', 
         }}>
-          <Typography variant="body1" component="span" sx={{marginRight: '20px', }}>
+          <Typography variant="h4" component="h1" sx={{
+            fontFamily: 'Get Schwifty, Roboto, Arial, sans-serif',
+            color: 'rgba(0, 40, 0, 0.8)',
+            marginRight: '20px',
+          }}>
               Rows per page:
           </Typography>
           <FormControl variant="outlined">
@@ -258,9 +478,41 @@ export default function FinalTable({ _, dataCharacters }) {
               onChange={handleChangeRowsPerPage}
               displayEmpty
               inputProps={{ 'aria-label': 'Rows per page' }}
+              sx={{
+                marginRight: '20px',
+                backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                color: 'white',
+                '& .MuiSelect-icon': {
+                  color: 'white',
+                },
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 0.8)',
+                },
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 1)',
+                },
+                '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'rgba(0, 40, 0, 1)',
+                },
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 40, 0, 0.9)',
+                },
+                '&.Mui-focused': {
+                  backgroundColor: 'rgba(0, 40, 0, 1)',
+                },
+              }}
             >
               {[10, 20, 50, 100, 200, 400].map((option) => (
-                <MenuItem key={option} value={option}>
+                <MenuItem key={option} value={option}
+                sx={{
+                  backgroundColor: 'rgba(0, 40, 0, 0.8)',
+                  color: 'white',
+                  '&.Mui-selected': {
+                    backgroundColor: 'rgba(0, 40, 0, 1)',
+                  }, '&:hover': {
+                    color: 'rgba(0, 40, 0, 1)',
+                  }
+                }}>
                   {option}
                 </MenuItem>
               ))}

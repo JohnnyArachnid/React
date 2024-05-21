@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -16,6 +16,11 @@ import {
   Box,
   Button
 } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import HomeIcon from '@mui/icons-material/Home';
+import SkipNextIcon from '@mui/icons-material/SkipNext';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import './Card.css';
 
 const CharacterDetails = ({ character, openOrigin, setOpenOrigin, openLocation, setOpenLocation, openEpisode, setOpenEpisode }) => {
@@ -32,79 +37,235 @@ const CharacterDetails = ({ character, openOrigin, setOpenOrigin, openLocation, 
         maxHeight: '57vh',
       }} aria-label="character details">
       <ListItem>
-        <ListItemText primary="ID" secondary={character.id || "No Data"} />
+        <ListItemText primary="ID" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.id || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }} />
+      </ListItem>
+      <Divider component="li"/>
+      <ListItem>
+        <ListItemText primary="Status" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+     }} secondary={character.status || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }} />
       </ListItem>
       <Divider component="li" />
       <ListItem>
-        <ListItemText primary="Status" secondary={character.status || "No Data"} />
+        <ListItemText primary="Species" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.species || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
       <Divider component="li" />
       <ListItem>
-        <ListItemText primary="Species" secondary={character.species || "No Data"} />
+        <ListItemText primary="Type" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.type || "Normal"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
       <Divider component="li" />
       <ListItem>
-        <ListItemText primary="Type" secondary={character.type || "Normal"} />
-      </ListItem>
-      <Divider component="li" />
-      <ListItem>
-        <ListItemText primary="Gender" secondary={character.gender || "No Data"} />
+        <ListItemText primary="Gender" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.gender || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
       <Divider component="li" />
       <ListItem button onClick={() => setOpenOrigin(!openOrigin)}>
-        <ListItemText primary="Origin" secondary={character.origin.name || "No Data"} />
+        <ListItemText primary="Origin" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.origin.name || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
       <Collapse in={openOrigin} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="body2">Type: {character.origin.type || "No Data"}</Typography>
-          <Typography variant="body2">Dimension: {character.origin.dimension || "No Data"}</Typography>
-          <Typography variant="body2">Number of Citizens: {character.origin.residents.length}</Typography>
-          <Typography variant="body2">Created: {character.origin.created || "No Data"}</Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Type:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + (character.origin.type || "No Data")}
+          </span>
+        </Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Dimension:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + (character.origin.dimension || "No Data")}
+          </span>
+        </Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Number of Citizens:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + character.origin.residents.length || "No Data"}
+          </span>
+        </Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Created:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + (character.origin.created || "No Data")}
+          </span>
+        </Typography>
         </CardContent>
       </Collapse>
       <Divider component="li" />
       <ListItem button onClick={() => setOpenLocation(!openLocation)}>
-        <ListItemText primary="Location" secondary={character.location.name || "No Data"} />
+        <ListItemText primary="Location" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.location.name || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
       <Collapse in={openLocation} timeout="auto" unmountOnExit>
         <CardContent>
-          <Typography variant="body2">Type: {character.location.type || "No Data"}</Typography>
-          <Typography variant="body2">Dimension: {character.location.dimension || "No Data"}</Typography>
-          <Typography variant="body2">Number of Citizens: {character.location.residents.length || "No Data"}</Typography>
-          <Typography variant="body2">Created: {character.location.created || "No Data"}</Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Type:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + character.location.type || " No Data"}
+          </span>
+        </Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Dimension:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + character.location.dimension || " No Data"}
+          </span>
+        </Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Number of Citizens:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + character.location.residents.length || " No Data"}
+          </span>
+        </Typography>
+        <Typography variant="body2" component="h6">
+          <span style={{ fontWeight: 'bold', color: 'rgba(0, 40, 0, 1)' }}>
+            Created:
+          </span> 
+          <span style={{ color: 'rgba(0, 40, 0, 0.8)' }}>
+            {' ' + character.location.created || " No Data"}
+          </span>
+        </Typography>
         </CardContent>
       </Collapse>
       <Divider component="li" />
       <ListItem button onClick={() => setOpenEpisode(!openEpisode)}>
-        <ListItemText primary="Episode Count" secondary={character.episode.length} />
+        <ListItemText primary="Episode Count" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.episode.length} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
       <Collapse in={openEpisode} timeout="auto" unmountOnExit>
-        <List>
-          {character.episode.map((ep, index) => (
-            <React.Fragment key={ep.id}>
-              <ListItem>
-                <Grid container>
-                  <Grid item xs={4}>
-                    <ListItemText primary="Episode Name" secondary={ep.name || "No Data"} sx={{ textAlign: 'center', }} />
-                  </Grid>
-                  <Divider orientation="vertical" variant="middle" flexItem />
-                  <Grid item xs={4}>
-                    <ListItemText primary="Episode Number" secondary={ep.episode || "No Data"} sx={{ textAlign: 'center', }} />
-                  </Grid>
-                  <Divider orientation="vertical" variant="middle" flexItem />
-                  <Grid item xs={3.9}>
-                    <ListItemText primary="Episode Air Date" secondary={ep.air_date || "No Data"} sx={{ textAlign: 'center', }} />
-                  </Grid>
-                </Grid>
-              </ListItem>
-              {index !== character.episode.length - 1 && <Divider />}
-            </React.Fragment>
-          ))}
-        </List>
+      <List>
+        {character.episode.map((ep, index) => (
+          <React.Fragment key={ep.id}>
+            <ListItem sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingX: 0 }}>
+              <ListItemText primary="Episode Name" primaryTypographyProps={{
+                sx: {
+                  fontWeight: 'bold',
+                  color: 'rgba(0, 40, 0, 1)',
+                },
+              }} secondary={ep.name || "No Data"} secondaryTypographyProps={{
+                sx: {
+                  color: 'rgba(0, 40, 0, 0.8)',
+                },
+              }} sx={{ textAlign: 'center', flexBasis: '33%' }} />
+              <Divider orientation="vertical" flexItem />
+              <ListItemText primary="Episode Number" primaryTypographyProps={{
+                sx: {
+                  fontWeight: 'bold',
+                  color: 'rgba(0, 40, 0, 1)',
+                },
+              }} secondary={ep.episode || "No Data"} secondaryTypographyProps={{
+                sx: {
+                  color: 'rgba(0, 40, 0, 0.8)',
+                },
+              }} sx={{ textAlign: 'center', flexBasis: '33%' }} />
+              <Divider orientation="vertical" flexItem />
+              <ListItemText primary="Episode Air Date" primaryTypographyProps={{
+                sx: {
+                  fontWeight: 'bold',
+                  color: 'rgba(0, 40, 0, 1)',
+                },
+              }} secondary={ep.air_date || "No Data"} secondaryTypographyProps={{
+                sx: {
+                  color: 'rgba(0, 40, 0, 0.8)',
+                },
+              }} sx={{ textAlign: 'center', flexBasis: '33%' }} />
+            </ListItem>
+            {index !== character.episode.length - 1 && <Divider />}
+          </React.Fragment>
+        ))}
+      </List>
       </Collapse>
       <Divider component="li" />
       <ListItem>
-        <ListItemText primary="Created" secondary={character.created || "No Data"} />
+        <ListItemText primary="Created" primaryTypographyProps={{
+      sx: {
+        fontWeight: 'bold',
+        color: 'rgba(0, 40, 0, 1)',
+      },
+    }} secondary={character.created || "No Data"} secondaryTypographyProps={{
+      sx: {
+        color: 'rgba(0, 40, 0, 0.8)',
+      },
+    }}/>
       </ListItem>
     </List>
   );
@@ -136,9 +297,25 @@ export default function MediaCard({ characterCount, dataCharacters }) {
     }
   };
 
+  const handleFirst = () => {
+    navigate(`/character/1`);
+  };
+
+  const handleLast = () => {
+    navigate(`/character/${characterCount}`);
+  };
+
   return (
-    <Box sx={{ margin: 'auto', overflow: 'auto', }}>
-      <Card sx={{ minWidth: '60vw', maxWidth: '90vw', maxHeight: '90vh', minHeight: '50vh', }} raised={true}>
+    <Box sx={{ margin: 'auto',
+      overflow: 'auto',
+    }}>
+      <Card sx={{ minWidth: '60vw',
+        maxWidth: '90vw', 
+        maxHeight: '90vh', 
+        minHeight: '50vh', 
+        border: '5px solid black',
+        borderRadius: '10px',
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',}} raised={true}>
         <Grid container>
           <Grid item xs={5}>
             <CardMedia
@@ -156,12 +333,16 @@ export default function MediaCard({ characterCount, dataCharacters }) {
             />
           </Grid>
           <Grid item xs={7}>
-            <CardHeader
+            <CardHeader sx={{
+                paddingBottom: 0
+              }}
               title={isEmptyData ? 'No Data' : character.name}
               titleTypographyProps={{
                 sx: {
                   fontWeight: 'bold',
                   textAlign: 'center',
+                  fontFamily: 'Get Schwifty, Roboto, Arial, sans-serif',
+                  color: 'rgba(0, 40, 0, 0.8)',
                 }
               }} />
             <CardContent>
@@ -182,16 +363,58 @@ export default function MediaCard({ characterCount, dataCharacters }) {
           </Grid>
         </Grid>
       </Card>
-      <Container maxWidth="xl" sx={{
+      <Container maxWidth="sm" sx={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
         height: '10vh',
-        paddingY: 2,
+        margin: 'auto',
+        overflow: 'auto',
       }}>
-        <Button onClick={handlePrev}>Prev</Button>
-        <Button onClick={handleNext}>Next</Button>
+        {parseInt(id) > 1 && (
+          <Button onClick={handleFirst} sx={{
+            backgroundColor: 'rgba(0, 40, 0, 0.8)',
+            '&:hover': { backgroundColor: 'rgba(0, 40, 0, 0.9)' },
+            '&:active': { backgroundColor: 'rgba(0, 40, 0, 1)' },
+          }}>
+            <SkipPreviousIcon fontSize="large" sx={{ color: 'white' }} />
+          </Button>
+        )}
+        {parseInt(id) > 1 && (
+          <Button onClick={handlePrev} sx={{
+            backgroundColor: 'rgba(0, 40, 0, 0.8)',
+            '&:hover': { backgroundColor: 'rgba(0, 40, 0, 0.9)' },
+            '&:active': { backgroundColor: 'rgba(0, 40, 0, 1)' },
+          }}>
+            <ArrowBackIcon fontSize="large" sx={{ color: 'white' }} />
+          </Button>
+        )}
+        <Button component={Link} to="/" color="inherit" sx={{
+          backgroundColor: 'rgba(0, 40, 0, 0.8)',
+          '&:hover': { backgroundColor: 'rgba(0, 40, 0, 0.9)' },
+          '&:active': { backgroundColor: 'rgba(0, 40, 0, 1)' },
+        }}>
+          <HomeIcon fontSize="large" sx={{ color: 'white' }} />
+        </Button>
+        {parseInt(id) < characterCount && (
+          <Button onClick={handleNext} sx={{
+            backgroundColor: 'rgba(0, 40, 0, 0.8)',
+            '&:hover': { backgroundColor: 'rgba(0, 40, 0, 0.9)' },
+            '&:active': { backgroundColor: 'rgba(0, 40, 0, 1)' },
+          }}>
+            <ArrowForwardIcon fontSize="large" sx={{ color: 'white' }} />
+          </Button>
+        )}
+        {parseInt(id) < characterCount && (
+          <Button onClick={handleLast} sx={{
+            backgroundColor: 'rgba(0, 40, 0, 0.8)',
+            '&:hover': { backgroundColor: 'rgba(0, 40, 0, 0.9)' },
+            '&:active': { backgroundColor: 'rgba(0, 40, 0, 1)' },
+          }}>
+            <SkipNextIcon fontSize="large" sx={{ color: 'white' }} />
+          </Button>
+        )}
       </Container>
     </Box>
   );
