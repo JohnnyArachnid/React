@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
+import { Box } from '@mui/material';
+import Portal from '../Portal/Portal';
+import './DataLoader.css';
 
 const GET_CHARACTERS_COUNT = gql`
   query {
@@ -72,53 +75,21 @@ export default function DataLoader({ children }) {
     skip: characterCount <= 0 || loadingData
   });
 
-  if (loadingCount || loadingCharacters || loadingData) return <div style={{
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(0, 0, 0)', 
-    zIndex: 9999, 
-    color: 'white',
-    }}
-  >
-    <p>Loading...</p>
-  </div>;
-  if (errorCount) return <div style={{
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(0, 0, 0)', 
-    zIndex: 9999, 
-    color: 'white',
-    }}
-  >
-    <p>Error fetching character count: {errorCount.message}</p>;
-  </div>;
-  if (errorCharacters) return <div style={{
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgb(0, 0, 0)', 
-    zIndex: 9999, 
-    color: 'white',
-    }}
-  >
-    <p>Error fetching characters: {errorCharacters.message}</p>;
-  </div>;
+  if (errorCount || errorCharacters) {
+    return (
+      <Box className='Container'>
+        <Portal displayData={`Error fetching data: ${errorCount ? 'character count: ' + errorCount.message : 'charactes: ' + errorCharacters.message}`} isError />
+      </Box>
+    );
+  }
+
+  if (loadingCount || loadingCharacters || loadingData) {
+    return (
+      <Box className='Container'>
+        <Portal displayData={'Loading ...'} />
+      </Box>
+    );
+  }
+
   return React.cloneElement(children, { characterCount, dataCharacters });
-};
+}

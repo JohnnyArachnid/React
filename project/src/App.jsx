@@ -22,7 +22,7 @@ export default function App() {
           flexDirection: 'column',
           justifyContent: 'space-between',
           height: '100vh',
-          backgroundImage: `url("/background.png")`,
+          backgroundImage: `url("/backgroundMain.png")`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',

@@ -21,6 +21,13 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import HomeIcon from '@mui/icons-material/Home';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
 import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
+import TransgenderIcon from '@mui/icons-material/Transgender';
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import HeartBrokenIcon from '@mui/icons-material/HeartBroken';
+
 import './Card.css';
 
 const CharacterDetails = ({ character, openOrigin, setOpenOrigin, openLocation, setOpenLocation, openEpisode, setOpenEpisode }) => {
@@ -34,7 +41,7 @@ const CharacterDetails = ({ character, openOrigin, setOpenOrigin, openLocation, 
         borderColor: 'divider',
         backgroundColor: 'background.paper',
         overflow: 'auto',
-        maxHeight: '57vh',
+        maxHeight: '52vh',
       }} aria-label="character details">
       <ListItem>
         <ListItemText primary="ID" primaryTypographyProps={{
@@ -271,6 +278,28 @@ const CharacterDetails = ({ character, openOrigin, setOpenOrigin, openLocation, 
   );
 };
 
+const statusIcons = {
+  Alive: <FavoriteIcon fontSize="large" />,
+  Dead: <HeartBrokenIcon fontSize="large" />,
+  default: <QuestionMarkIcon fontSize="large" />,
+};
+
+const CharacterStatusMark = ({ characterStatus }) => {
+  return statusIcons[characterStatus] || statusIcons.default;
+};
+
+const genderIcons = {
+  Female: <FemaleIcon fontSize="large" />,
+  Male: <MaleIcon fontSize="large" />,
+  Genderless: <TransgenderIcon fontSize="large" />,
+  default: <QuestionMarkIcon fontSize="large" />,
+};
+
+const CharacterGenderMark = ({ characterGender }) => {
+  return genderIcons[characterGender] || genderIcons.default;
+};
+
+
 export default function MediaCard({ characterCount, dataCharacters }) {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -315,7 +344,9 @@ export default function MediaCard({ characterCount, dataCharacters }) {
         minHeight: '50vh', 
         border: '5px solid black',
         borderRadius: '10px',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',}} raised={true}>
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+        margin: 'auto',
+        overflow: 'auto',}} raised={true}>
         <Grid container>
           <Grid item xs={5}>
             <CardMedia
@@ -333,9 +364,7 @@ export default function MediaCard({ characterCount, dataCharacters }) {
             />
           </Grid>
           <Grid item xs={7}>
-            <CardHeader sx={{
-                paddingBottom: 0
-              }}
+            <CardHeader
               title={isEmptyData ? 'No Data' : character.name}
               titleTypographyProps={{
                 sx: {
@@ -345,6 +374,32 @@ export default function MediaCard({ characterCount, dataCharacters }) {
                   color: 'rgba(0, 40, 0, 0.8)',
                 }
               }} />
+              <Container sx={{ 
+                display: 'flex', 
+                justifyContent: 'space-evenly', 
+                alignItems: 'center', 
+                paddingBottom: '0px',
+              }} 
+              maxWidth="md">
+                  <Typography sx={{color: 'white',
+                    backgroundColor: 'rgba(0, 40, 0, 1)', 
+                    fontWeight: 'bold', 
+                    alignItems: 'center',
+                    paddingX: 2, 
+                    paddingTop: '7px', 
+                    border: '5px solid black',
+                    borderRadius: '10px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',}}><CharacterGenderMark characterGender={character.gender}/></Typography>
+                  <Typography sx={{color: 'white',
+                    backgroundColor: 'rgba(0, 40, 0, 1)', 
+                    fontWeight: 'bold', 
+                    alignItems: 'center',
+                    paddingX: 2, 
+                    paddingTop: '7px', 
+                    border: '5px solid black',
+                    borderRadius: '10px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',}}><CharacterStatusMark characterStatus={character.status}/></Typography>
+              </Container>
             <CardContent>
               {isEmptyData ? (
                 <Typography variant="body1" align="center">No Data</Typography>
