@@ -67,6 +67,7 @@
     position: relative;
     z-index: 1;
     color: rgba(0, 40, 0, 1);
+    font-size: calc(1.5vw + 1.5vh);
   }
   
   @keyframes rotate {
