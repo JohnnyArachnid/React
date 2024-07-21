@@ -1,29 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import { 
-  Paper,
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableContainer, 
-  TableHead, 
-  TableRow, 
-  Pagination, 
-  Container, 
-  Box, 
-  TextField, 
-  MenuItem, 
-  FormControl, 
-  Select, 
-  Typography, 
-  Button,
-  InputAdornment,
-  Avatar,
-} from "@mui/material";
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import AccountCircle from '@mui/icons-material/AccountCircle';
-import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Pagination, Container, Box, TextField, MenuItem, FormControl, Select, Typography, Button, InputAdornment, Avatar, } from "@mui/material";
+import { RestartAlt, AccountCircle, ChangeCircle} from '@mui/icons-material';
 import { useQuery, gql } from '@apollo/client';
+import Portal from '../Portal/Portal.tsx';
 
 const GET_CHARACTERS = gql`
   query GetCharacters($page: Int!, $filterName: String, $filterStatus: String, $filterGender: String) {
@@ -85,6 +65,26 @@ export default function FinalTable() {
     fetchPolicy: "network-only",
   });
 
+  useEffect(() => {
+    if (error) {
+      if (error.networkError) {
+        navigate('/500', { state: { message: `Error fetching data: ${error.message}` } });
+      } else if (error.graphQLErrors.some(e => e.extensions?.code === '404')) {
+        navigate('/404', { state: { message: `Error fetching data: ${error.message}` } });
+      } else {
+        navigate('/500', { state: { message: `Error fetching data: ${error.message}` } });
+      }
+    }
+  }, [error, navigate]);
+
+  if (loading) {
+    return (
+      <Box className='Container'>
+        <Portal displayData={'Loading ...'} isError={false}/>
+      </Box>
+    );
+  }
+
   const rows = data?.characters?.results.map(character => ({
     id: character.id,
     name: character.name,
@@ -98,11 +98,9 @@ export default function FinalTable() {
     episodesNumber: character.episode.length,
   })) || [];
 
-  const totalCount = data?.characters?.info.count || 0;
-  const totalPages = data?.characters?.info.pages || 0;
-
   const handleChangePage = (_, newPage) => {
     setPage(newPage);
+    refetch();
   };
 
   const handleFilterNameChange = (event) => {
@@ -118,11 +116,12 @@ export default function FinalTable() {
   };
 
   const handleReset = () => {
+    setPage(1);
     setFilterName('');
     setFilterStatus('');
     setFilterGender('');
-    setPage(1);
     setLocalFilters({ name: '', status: '', gender: '' });
+    refetch();
   };
 
   const handleApplyFilters = () => {
@@ -175,7 +174,7 @@ export default function FinalTable() {
   return (
     <Paper sx={{ minWidth: '60vw', maxWidth: '90vw', maxHeight: '90vh', minHeight: '50vh', overflow: 'auto', margin: 'auto', backgroundColor: 'white', border: '5px solid black', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)', }}>
       <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', borderRadius: '10px', }} maxWidth="lg">
-        <Button variant="contained" onClick={handleReset} sx={{ ...commonStyles, backgroundColor: 'rgba(0, 40, 0, 0.8)', '&:hover': { backgroundColor: 'rgba(0, 40, 0, 1)' }, }} size='large' startIcon={<RestartAltIcon />}>Reset</Button>
+        <Button variant="contained" onClick={handleReset} sx={{ ...commonStyles, backgroundColor: 'rgba(0, 40, 0, 0.8)', '&:hover': { backgroundColor: 'rgba(0, 40, 0, 1)' }, }} size='large' startIcon={<RestartAlt />}>Reset</Button>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px' }}>
           <TextField label="Filter by name" variant="filled" value={filterName} onChange={handleFilterNameChange} InputProps={{ startAdornment: (
             <InputAdornment position="start">
@@ -201,7 +200,7 @@ export default function FinalTable() {
           </FormControl>
         </Box>
         <Typography variant="h4" component="h1" sx={{ fontFamily: 'Get Schwifty, Roboto, Arial, sans-serif', color: 'rgba(0, 40, 0, 0.8)', }}>
-          Count of Rows: {totalCount}
+          Count of Rows: {data?.characters?.info.count}
         </Typography>
       </Container>
       <TableContainer sx={{ maxHeight: 440 }}>
@@ -238,7 +237,7 @@ export default function FinalTable() {
         </Table>
       </TableContainer>
       <Container sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px', }} maxWidth="lg">
-        <Pagination count={totalPages} page={page} onChange={handleChangePage} showFirstButton showLastButton size="large" variant="outlined" shape="rounded" sx={{
+        <Pagination count={data?.characters?.info.pages} page={page} onChange={handleChangePage} showFirstButton showLastButton size="large" variant="outlined" shape="rounded" sx={{
             marginRight: '20px', '& .MuiPaginationItem-root': { color: 'rgba(0, 40, 0, 0.8)', fontWeight: 'bold' },
             '& .Mui-selected': { color: 'rgba(0, 40, 0, 1)' }, '& .MuiPaginationItem-ellipsis': { color: 'rgba(0, 40, 0, 1)' },
             '& .MuiPaginationItem-page:hover': { color: 'rgba(0, 40, 0, 0.9)' },
@@ -249,7 +248,7 @@ export default function FinalTable() {
           <Typography variant="h4" component="h1" sx={{ fontFamily: 'Get Schwifty, Roboto, Arial, sans-serif', color: 'rgba(0, 40, 0, 0.8)', marginRight: '20px', }}>
               Apply changes:
             </Typography>
-          <Button variant="contained" onClick={handleApplyFilters} sx={{ ...commonStyles, backgroundColor: 'rgba(0, 40, 0, 0.8)', '&:hover': { backgroundColor: 'rgba(0, 40, 0, 1)' }, }} size='large'><ChangeCircleIcon sx={{ color: 'white', fontSize: 30}}/></Button>
+          <Button variant="contained" onClick={handleApplyFilters} sx={{ ...commonStyles, backgroundColor: 'rgba(0, 40, 0, 0.8)', '&:hover': { backgroundColor: 'rgba(0, 40, 0, 1)' }, }} size='large'><ChangeCircle sx={{ color: 'white', fontSize: 30}}/></Button>
         </Box>
       </Container>
     </Paper>

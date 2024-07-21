@@ -78,7 +78,7 @@ export default function DataLoader({ children }) {
   if (errorCount || errorCharacters) {
     return (
       <Box className='Container'>
-        <Portal displayData={`Error fetching data: ${errorCount ? 'character count: ' + errorCount.message : 'charactes: ' + errorCharacters.message}`} isError />
+        <Portal displayData={`Error fetching data: ${error.message}`} isError />
       </Box>
     );
   }
