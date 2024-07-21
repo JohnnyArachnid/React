@@ -21,9 +21,7 @@ export default function App() {
           <Container maxWidth="xl" sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', height: '100vh', paddingY: 2, overflow: 'auto', margin: 'auto', }}>
             <Routes>
               <Route path="/" element={
-                  <DataLoader>
-                    <FinalTable />
-                  </DataLoader>
+                  <FinalTable />
                 }
               />
               <Route path="/character/:id" element={
