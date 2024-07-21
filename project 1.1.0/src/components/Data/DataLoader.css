@@ -1,0 +1,17 @@
+.Container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url('/backgroundPortal.png') no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+    color: white;
+    margin: auto;
+    overflow: auto;
+}
+  
