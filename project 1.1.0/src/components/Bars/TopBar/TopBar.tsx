@@ -1,7 +1,8 @@
+import { FC } from "react";
 import { AppBar, Toolbar, ThemeProvider } from '@mui/material';
-import BarsTheme from '../BarsTheme.js';
+import BarsTheme from '../BarsTheme.tsx';
 
-export default function TopBar() {
+const TopBar: FC = (): JSX.Element => {
   return (
     <ThemeProvider theme={BarsTheme}>
       <AppBar position="static">
@@ -12,3 +13,5 @@ export default function TopBar() {
     </ThemeProvider>
   );
 }
+
+export default TopBar;

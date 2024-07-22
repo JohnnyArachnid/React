@@ -10,13 +10,13 @@
     margin: auto;
     overflow: hidden;
   }
-  
+
   .PortalBackground {
     position: absolute;
     height: 100%;
     width: 100%;
     border-radius: 50%;
-    background: 
+    background:
       radial-gradient(circle at 70% 70%, #FDFEB4 2.5%, transparent 2.5%),
       radial-gradient(circle at 68% 75%, #FDFEB4 2%, transparent 2%),
       radial-gradient(circle at 73% 73%, #FDFEB4 1%, transparent 1%),
@@ -49,11 +49,11 @@
       radial-gradient(circle at 50% 50%, #FDFEB4 100%, #FDFEB4 100%);
     animation: rotate 2s linear infinite;
   }
-  
+
   .Portal.noRotate .PortalBackground {
     animation: none;
   }
-  
+
   .PortalLogo {
     width: 90%;
     height: auto;
@@ -61,7 +61,7 @@
     z-index: 1;
     margin-bottom: 20px;
   }
-  
+
   .PortalText {
     text-align: center;
     position: relative;
@@ -69,7 +69,7 @@
     color: rgba(0, 40, 0, 1);
     font-size: calc(1.5vw + 1.5vh);
   }
-  
+
   @keyframes rotate {
     from {
       transform: rotate(0deg);
@@ -78,4 +78,3 @@
       transform: rotate(360deg);
     }
   }
-  

@@ -1,16 +1,19 @@
+import { FC } from "react";
 import { AppBar, Toolbar, Typography, ThemeProvider } from '@mui/material';
-import BarsTheme from '../BarsTheme.js';
+import BarsTheme from '../BarsTheme.tsx';
 
-export default function BottomBar() {
+const BottomBar: FC = (): JSX.Element => {
     return (
         <ThemeProvider theme={BarsTheme}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="subtitle1" component="h1">
-                        &copy; 2024 Fingoweb Internship Project, Autor: Daniel Szarek
+                    <Typography variant="subtitle1" component="h1" sx={{ textAlign: 'center', }}>
+                        &copy; 2024 Fingoweb Internship Project, Autor: Daniel Szarek, Wersja 1.1.0
                     </Typography>
                 </Toolbar>
             </AppBar>
         </ThemeProvider>
     );
 }
+
+export default BottomBar;
